@@ -123,4 +123,10 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'providers' => [
+    // ... otros providers existentes
+    App\Providers\AppServiceProvider::class,
+    App\Providers\RouteServiceProvider::class, // Agregar esta línea
+    ],
+
 ];
