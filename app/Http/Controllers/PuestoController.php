@@ -8,32 +8,41 @@ use Illuminate\Http\Request;
 class PuestoController extends Controller
 {
     public function index() {
-        return Puesto::all();
+        return response()->json(Puesto::all(), 200);
     }
 
     public function store(Request $request) {
-        $validated = $request->validate([
+        $request->validate([
             'nombre' => 'required|string|max:100',
         ]);
-        return Puesto::create($validated);
+
+        $puesto = Puesto::create($request->all());
+        return response()->json($puesto, 201);
     }
 
     public function show($id) {
-        return Puesto::findOrFail($id);
+        $p = Puesto::find($id);
+        if (!$p) return response()->json(['message' => 'No encontrado'], 404);
+        return response()->json($p, 200);
     }
 
     public function update(Request $request, $id) {
-        $puesto = Puesto::findOrFail($id);
-        $validated = $request->validate([
+        $p = Puesto::find($id);
+        if (!$p) return response()->json(['message' => 'No encontrado'], 404);
+
+        $request->validate([
             'nombre' => 'sometimes|required|string|max:100',
         ]);
-        $puesto->update($validated);
-        return $puesto;
+
+        $p->update($request->all());
+        return response()->json($p, 200);
     }
 
     public function destroy($id) {
-        $puesto = Puesto::findOrFail($id);
-        $puesto->delete();
-        return response()->json(['message' => 'Puesto eliminado']);
+        $p = Puesto::find($id);
+        if (!$p) return response()->json(['message' => 'No encontrado'], 404);
+
+        $p->delete();
+        return response()->json(['message' => 'Eliminado correctamente'], 200);
     }
 }

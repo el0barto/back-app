@@ -7,15 +7,11 @@ use Illuminate\Http\Request;
 
 class DepartamentoController extends Controller
 {
-    // Listar todos los departamentos
-    public function index()
-    {
+    public function index() {
         return response()->json(Departamento::all(), 200);
     }
 
-    // Crear un nuevo departamento
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $request->validate([
             'nombre' => 'required|string|max:100',
             'descripcion' => 'nullable|string|max:255',
@@ -23,30 +19,18 @@ class DepartamentoController extends Controller
         ]);
 
         $departamento = Departamento::create($request->all());
-
         return response()->json($departamento, 201);
     }
 
-    // Mostrar un departamento específico
-    public function show($id)
-    {
-        $departamento = Departamento::find($id);
-
-        if (!$departamento) {
-            return response()->json(['message' => 'Departamento no encontrado'], 404);
-        }
-
-        return response()->json($departamento, 200);
+    public function show($id) {
+        $dep = Departamento::find($id);
+        if (!$dep) return response()->json(['message' => 'No encontrado'], 404);
+        return response()->json($dep, 200);
     }
 
-    // Actualizar un departamento
-    public function update(Request $request, $id)
-    {
-        $departamento = Departamento::find($id);
-
-        if (!$departamento) {
-            return response()->json(['message' => 'Departamento no encontrado'], 404);
-        }
+    public function update(Request $request, $id) {
+        $dep = Departamento::find($id);
+        if (!$dep) return response()->json(['message' => 'No encontrado'], 404);
 
         $request->validate([
             'nombre' => 'sometimes|required|string|max:100',
@@ -54,22 +38,15 @@ class DepartamentoController extends Controller
             'subcuenta' => 'sometimes|required|string|max:3',
         ]);
 
-        $departamento->update($request->all());
-
-        return response()->json($departamento, 200);
+        $dep->update($request->all());
+        return response()->json($dep, 200);
     }
 
-    // Eliminar un departamento
-    public function destroy($id)
-    {
-        $departamento = Departamento::find($id);
+    public function destroy($id) {
+        $dep = Departamento::find($id);
+        if (!$dep) return response()->json(['message' => 'No encontrado'], 404);
 
-        if (!$departamento) {
-            return response()->json(['message' => 'Departamento no encontrado'], 404);
-        }
-
-        $departamento->delete();
-
-        return response()->json(['message' => 'Departamento eliminado'], 200);
+        $dep->delete();
+        return response()->json(['message' => 'Eliminado correctamente'], 200);
     }
 }
