@@ -11,8 +11,8 @@ class Puesto extends Model
     protected $fillable = ['nombre', 'departamento_id'];
 
     // Un puesto pertenece a un departamento
-    public function departamento(): BelongsTo
+    public function departamento()
     {
-        return $this->belongsTo(Departamento::class);
+        return $this->belongsTo(Departamento::class, 'departamento_id');
     }
 }

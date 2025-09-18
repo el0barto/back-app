@@ -11,7 +11,7 @@ class Departamento extends Model
     protected $fillable = ['nombre', 'descripcion', 'subcuenta'];
 
     // Un departamento tiene muchos puestos
-    public function puestos(): HasMany
+    public function puestos()
     {
         return $this->hasMany(Puesto::class);
     }
