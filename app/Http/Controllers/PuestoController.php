@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 class PuestoController extends Controller
 {
     public function index() {
-        return response()->json(Puesto::all(), 200);
+        // Cargar puestos con sus departamentos
+        $puestos = Puesto::with('departamento')->get();
+        return response()->json($puestos);
     }
 
     public function store(Request $request) {

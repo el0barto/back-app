@@ -3,12 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Departamento extends Model
 {
-    // Apunta a la tabla existente
     protected $table = 'departamento';
-
-    // Campos que se pueden llenar masivamente
     protected $fillable = ['nombre', 'descripcion', 'subcuenta'];
+
+    // Un departamento tiene muchos puestos
+    public function puestos(): HasMany
+    {
+        return $this->hasMany(Puesto::class);
+    }
 }
+
