@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departamento;
+use App\Http\Resources\DepartamentoResource;
 use Illuminate\Http\Request;
 
 class DepartamentoController extends Controller
 {
     public function index() {
-        return response()->json(Departamento::all(), 200);
+        $departamentos = Departamento::all();
+        return DepartamentoResource::collection($departamentos);
     }
 
     public function store(Request $request) {
@@ -19,13 +21,13 @@ class DepartamentoController extends Controller
         ]);
 
         $departamento = Departamento::create($request->all());
-        return response()->json($departamento, 201);
+        return new DepartamentoResource($departamento);
     }
 
     public function show($id) {
         $dep = Departamento::find($id);
         if (!$dep) return response()->json(['message' => 'No encontrado'], 404);
-        return response()->json($dep, 200);
+        return new DepartamentoResource($dep);
     }
 
     public function update(Request $request, $id) {
@@ -39,7 +41,7 @@ class DepartamentoController extends Controller
         ]);
 
         $dep->update($request->all());
-        return response()->json($dep, 200);
+        return new DepartamentoResource($dep);
     }
 
     public function destroy($id) {
